@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santanna.studentapi.model.Student;
+import com.santanna.studentapi.domain.dto.adress.AdressDTO;
+import com.santanna.studentapi.domain.dto.student.StudentDTO;
+import com.santanna.studentapi.domain.dto.student.StudentInsertDTO;
+import com.santanna.studentapi.domain.model.Student;
+import com.santanna.studentapi.service.AdressService;
 import com.santanna.studentapi.service.StudentService;
 
 @RestController
@@ -23,6 +27,9 @@ public class StudentController {
 
   @Autowired
   private StudentService service;
+
+  @Autowired
+  private AdressService adressService;
 
   @GetMapping("/all")
   public ResponseEntity<List<Student>> getAllStudents() {
@@ -43,8 +50,9 @@ public class StudentController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<Student> addStudents(@RequestBody Student student) {
-    Student addStudent = service.addStudent(student);
+  public ResponseEntity<StudentDTO> addStudents(@RequestBody StudentInsertDTO studentInsertDTO) {
+    AdressDTO adress = adressService.adressQuery(studentInsertDTO.getCep());
+    StudentDTO addStudent = service.addStudent(studentInsertDTO, adress);
     return new ResponseEntity<>(addStudent, HttpStatus.CREATED);
   }
 
