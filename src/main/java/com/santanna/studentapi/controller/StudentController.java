@@ -18,6 +18,7 @@ import com.santanna.studentapi.domain.dto.adress.AdressDTO;
 import com.santanna.studentapi.domain.dto.student.StudentDTO;
 import com.santanna.studentapi.domain.dto.student.StudentInsertDTO;
 import com.santanna.studentapi.domain.model.Student;
+import com.santanna.studentapi.exception.UserNotFoundException;
 import com.santanna.studentapi.service.AdressService;
 import com.santanna.studentapi.service.StudentService;
 
@@ -38,15 +39,15 @@ public class StudentController {
   }
 
   @GetMapping("/find/{id}")
-  public ResponseEntity<Student> getStudent(@PathVariable("id") Long id) {
-    Student student = service.findStudentById(id);
-    return new ResponseEntity<>(student, HttpStatus.OK);
+  public ResponseEntity<StudentDTO> getStudent(@PathVariable("id") Long id) {
+    StudentDTO studentDTO = service.findStudentById(id);
+    return new ResponseEntity<>(studentDTO, HttpStatus.OK);
   }
 
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Student> deleteStudent(@PathVariable("id") Long id) {
-    service.deleteStudent(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<StudentDTO> deleteStudent(@PathVariable("id") Long id) {
+    StudentDTO deletedStudentDTO = service.deleteStudent(id);
+    return new ResponseEntity<>(deletedStudentDTO, HttpStatus.OK);
   }
 
   @PostMapping("/add")
@@ -57,9 +58,9 @@ public class StudentController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<Student> updateStudents(@RequestBody Student student) {
-    Student updateStudent = service.updateStudent(student);
-    return new ResponseEntity<>(updateStudent, HttpStatus.OK);
+  public ResponseEntity<StudentDTO> updateStudents(@RequestBody StudentDTO studentDTO) {
+    StudentDTO updatedStudentDTO = service.updateStudent(studentDTO);
+    return new ResponseEntity<>(updatedStudentDTO, HttpStatus.OK);
   }
 
 }

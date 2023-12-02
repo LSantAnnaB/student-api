@@ -1,6 +1,7 @@
 package com.santanna.studentapi.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +30,51 @@ public class StudentService {
     return new StudentDTO(studentPersisted);
   }
 
-  public Student findStudentById(Long id) {
-    return sRepository.findStudentById(id)
-        .orElseThrow(() -> new UserNotFoundException("User by id" + id + " was not found "));
+  public StudentDTO findStudentById(Long id) {
+    Student student = sRepository.findStudentById(id)
+        .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
+    return new StudentDTO(student);
   }
 
   public List<Student> findAllStudents() {
     return sRepository.findAll();
   }
 
-  public Student updateStudent(Student student) {
-    return sRepository.save(student);
+  public StudentDTO updateStudent(StudentDTO studentDTO) {
+    Long id = studentDTO.getId();
+    Optional<Student> studentOptional = sRepository.findById(id);
+
+    if (studentOptional.isPresent()) {
+      Student existingStudent = studentOptional.get();
+
+      existingStudent.setName(studentDTO.getName());
+      existingStudent.setEmail(studentDTO.getEmail());
+      existingStudent.setPhone(studentDTO.getPhone());
+      existingStudent.setCourse(studentDTO.getCourse());
+      existingStudent.setCpf(studentDTO.getCpf());
+
+      AdressDTO adressDTO = studentDTO.getAdressDTO();
+      if (adressDTO != null) {
+        Adress existingAdress = existingStudent.getAdress();
+        existingAdress.setCep(adressDTO.getCep());
+      }
+
+      Student updatedStudent = sRepository.save(existingStudent);
+      return new StudentDTO(updatedStudent);
+    } else {
+      throw new UserNotFoundException("User by id " + id + " was not found");
+    }
   }
 
-  public void deleteStudent(Long id) {
-    sRepository.deleteById(id);
+  public StudentDTO deleteStudent(Long id) {
+    Optional<Student> studentOptional = sRepository.findById(id);
+
+    if (studentOptional.isPresent()) {
+      Student student = studentOptional.get();
+      sRepository.deleteById(id);
+      return new StudentDTO(student);
+    } else {
+      throw new UserNotFoundException("User by id " + id + " was not found");
+    }
   }
 }
