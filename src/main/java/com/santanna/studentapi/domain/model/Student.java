@@ -25,26 +25,24 @@ public class Student implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false, updatable = false)
   private Long id;
-  @NotBlank(message = "Student NAME is required")
-  @Size(min = 10, max = 100)
   private String name;
-  @Size(min = 10, max = 1000)
-  @NotBlank(message = "Student E-MAIL is required")
-  private String email;
+  private String shift;
   private String phone;
-  private String course;
-  private String cpf;
+  private String data;
+  private String contractTime;
+  private String price;
+  private String responsible;
   @Column(nullable = false, updatable = false)
   private String studentCode;
 
-  private Adress adress;
-
   public Student(StudentInsertDTO studentInsertDTO) {
     this.name = studentInsertDTO.getName();
-    this.email = studentInsertDTO.getEmail();
+    this.shift = studentInsertDTO.getShift();
     this.phone = studentInsertDTO.getPhone();
-    this.course = studentInsertDTO.getCourse();
-    this.cpf = studentInsertDTO.getCpf();
+    this.data = studentInsertDTO.getData();
+    this.contractTime = studentInsertDTO.getContractTime();
+    this.price = studentInsertDTO.getPrice();
+    this.responsible = studentInsertDTO.getResponsible();
 
   }
 }

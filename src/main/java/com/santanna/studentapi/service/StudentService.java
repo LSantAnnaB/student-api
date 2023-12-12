@@ -7,10 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.santanna.studentapi.domain.dto.adress.AdressDTO;
 import com.santanna.studentapi.domain.dto.student.StudentDTO;
 import com.santanna.studentapi.domain.dto.student.StudentInsertDTO;
-import com.santanna.studentapi.domain.model.Adress;
 import com.santanna.studentapi.domain.model.Student;
 import com.santanna.studentapi.exception.UserNotFoundException;
 import com.santanna.studentapi.repository.StudentRepository;
@@ -21,10 +19,8 @@ public class StudentService {
   @Autowired
   private StudentRepository sRepository;
 
-  public StudentDTO addStudent(StudentInsertDTO studentInsertDTO, AdressDTO adressDTO) {
+  public StudentDTO addStudent(StudentInsertDTO studentInsertDTO) {
     Student student = new Student(studentInsertDTO);
-    Adress adress = new Adress(adressDTO);
-    student.setAdress(adress);
     student.setStudentCode(UUID.randomUUID().toString());
     Student studentPersisted = sRepository.save(student);
     return new StudentDTO(studentPersisted);
@@ -48,16 +44,11 @@ public class StudentService {
       Student existingStudent = studentOptional.get();
 
       existingStudent.setName(studentDTO.getName());
-      existingStudent.setEmail(studentDTO.getEmail());
+      existingStudent.setShift(studentDTO.getShift());
       existingStudent.setPhone(studentDTO.getPhone());
-      existingStudent.setCourse(studentDTO.getCourse());
-      existingStudent.setCpf(studentDTO.getCpf());
-
-      AdressDTO adressDTO = studentDTO.getAdressDTO();
-      if (adressDTO != null) {
-        Adress existingAdress = existingStudent.getAdress();
-        existingAdress.setCep(adressDTO.getCep());
-      }
+      existingStudent.setData(studentDTO.getData());
+      existingStudent.setPrice(studentDTO.getPrice());
+      existingStudent.setResponsible(studentDTO.getResponsible());
 
       Student updatedStudent = sRepository.save(existingStudent);
       return new StudentDTO(updatedStudent);

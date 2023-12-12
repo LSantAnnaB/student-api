@@ -1,6 +1,5 @@
 package com.santanna.studentapi.domain.dto.student;
 
-import com.santanna.studentapi.domain.dto.adress.AdressDTO;
 import com.santanna.studentapi.domain.model.Student;
 
 import lombok.Getter;
@@ -13,18 +12,20 @@ import lombok.Setter;
 public class StudentDTO {
   private Long id;
   private String name;
-  private String email;
+  private String shift;
   private String phone;
-  private String course;
-  private String cpf;
-  private AdressDTO adressDTO;
+  private String data;
+  private String contractTime;
+  private String price;
+  private String responsible;
 
   public StudentDTO(Student student) {
     name = student.getName();
-    email = student.getEmail();
+    shift = student.getShift();
     phone = student.getPhone();
-    course = student.getCourse();
-    cpf = student.getCpf();
-    adressDTO = new AdressDTO(student.getAdress());
+    data = student.getData();
+    contractTime = student.getContractTime();
+    price = student.getPrice();
+    responsible = student.getResponsible();
   }
 }

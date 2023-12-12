@@ -11,9 +11,10 @@ import lombok.Setter;
 @Setter
 public class StudentInsertDTO {
   private String name;
-  private String email;
+  private String shift;
   private String phone;
-  private String cpf;
-  private String cep;
-  private String course;
+  private String data;
+  private String contractTime;
+  private String price;
+  private String responsible;
 }
