@@ -1,9 +1,14 @@
 package com.santanna.studentapi.controller;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +23,7 @@ import com.santanna.studentapi.domain.dto.adress.AdressDTO;
 import com.santanna.studentapi.domain.dto.student.StudentDTO;
 import com.santanna.studentapi.domain.dto.student.StudentInsertDTO;
 import com.santanna.studentapi.domain.model.Student;
-import com.santanna.studentapi.exception.UserNotFoundException;
+import com.santanna.studentapi.excel.ExcelService;
 import com.santanna.studentapi.service.AdressService;
 import com.santanna.studentapi.service.StudentService;
 
@@ -31,6 +36,9 @@ public class StudentController {
 
   @Autowired
   private AdressService adressService;
+
+  @Autowired
+  private ExcelService excelService;
 
   @GetMapping("/all")
   public ResponseEntity<List<Student>> getAllStudents() {
@@ -63,4 +71,14 @@ public class StudentController {
     return new ResponseEntity<>(updatedStudentDTO, HttpStatus.OK);
   }
 
+  @RequestMapping("/excel")
+  public ResponseEntity<Resource> download() {
+    String fileName = "students.xlsx";
+    ByteArrayInputStream actualData = excelService.getActualData();
+    InputStreamResource file = new InputStreamResource(actualData);
+    ResponseEntity<Resource> body = ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+        .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(file);
+    return body;
+  }
 }

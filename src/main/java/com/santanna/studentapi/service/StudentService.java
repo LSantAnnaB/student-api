@@ -56,7 +56,19 @@ public class StudentService {
       AdressDTO adressDTO = studentDTO.getAdressDTO();
       if (adressDTO != null) {
         Adress existingAdress = existingStudent.getAdress();
-        existingAdress.setCep(adressDTO.getCep());
+
+        if (existingAdress == null) {
+          existingAdress = new Adress(adressDTO);
+          existingStudent.setAdress(existingAdress);
+        } else {
+          // Atualiza as propriedades do endereço
+          existingAdress.setCep(adressDTO.getCep());
+          existingAdress.setLogradouro(adressDTO.getLogradouro());
+          existingAdress.setNumero(adressDTO.getNumero());
+          existingAdress.setLocalidade(adressDTO.getLocalidade());
+          existingAdress.setUf(adressDTO.getUf());
+          existingAdress.setBairro(adressDTO.getBairro());
+        }
       }
 
       Student updatedStudent = sRepository.save(existingStudent);
