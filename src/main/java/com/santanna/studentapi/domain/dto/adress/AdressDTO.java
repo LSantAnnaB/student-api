@@ -14,6 +14,9 @@ public class AdressDTO {
   private String cep;
 
   private String logradouro;
+  private String localidade;
+
+  private String numero;
 
   private String uf;
 
@@ -26,5 +29,7 @@ public class AdressDTO {
     this.logradouro = adress.getLogradouro();
     this.uf = adress.getUf();
     this.bairro = adress.getBairro();
+    this.localidade = adress.getLocalidade();
+    this.numero = adress.getNumero();
   }
 }

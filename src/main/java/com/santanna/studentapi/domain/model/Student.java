@@ -4,16 +4,13 @@ import java.io.Serializable;
 
 import com.santanna.studentapi.domain.dto.student.StudentInsertDTO;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Data
 @AllArgsConstructor
@@ -37,6 +34,9 @@ public class Student implements Serializable {
   @Column(nullable = false, updatable = false)
   private String studentCode;
 
+  @Embedded
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "address_id", referencedColumnName = "id")
   private Adress adress;
 
   public Student(StudentInsertDTO studentInsertDTO) {
